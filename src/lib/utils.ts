@@ -31,7 +31,7 @@ export function getExpirationTextUtil(
         })
     }
 
-    if (expiration.add(50, 'year').isAfter(now)) {
+    if (expiration.isAfter(now.add(50, 'year'))) {
         return t('get-expiration-text.util.infinity')
     }
 
