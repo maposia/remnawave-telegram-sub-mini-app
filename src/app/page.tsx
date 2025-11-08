@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import {Center, Container, Group, Stack, Title,Image} from '@mantine/core'
 import { fetchUserByTelegramId } from '@/api/fetchUserByTgId'
 import { fetchAppEnv } from '@/api/fetchAppEnv'
-import { initData, useSignal } from '@telegram-apps/sdk-react'
+import { initData, useRawInitData, useSignal } from '@telegram-apps/sdk-react'
 import { Loading } from '@/components/Loading/Loading'
 import { ofetch } from 'ofetch'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher/LocaleSwitcher'
@@ -26,6 +26,7 @@ export default function Home() {
     const t = useTranslations()
 
     const initDataState = useSignal(initData.state)
+    const initDataRaw = useRawInitData()
     const telegramId = initDataState?.user?.id
     const [subscription, setSubscription] = useState<
         GetSubscriptionInfoByShortUuidCommand.Response['response'] | null
@@ -74,31 +75,32 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        if (telegramId) {
-            const fetchSubscription = async () => {
-                setIsLoading(true)
-                try {
-                    const user = await fetchUserByTelegramId(telegramId)
-                    if (user) {
-                        setSubscription(user)
-                    }
-
-                } catch (error) {
-                    const errorMessage =
-                        error instanceof Error ? error.message : 'Unknown error occurred'
-                    if (errorMessage !== 'Users not found') {
-                        setErrorConnect('ERR_FATCH_USER')
-                    }
-                    consola.error('Failed to fetch subscription:', error)
-                } finally {
-                    setSubscriptionLoaded(true)
-                    setIsLoading(false)
-                }
-            }
-
-            fetchSubscription()
+        if (!telegramId || !initDataRaw) {
+            return
         }
-    }, [telegramId])
+
+        const fetchSubscription = async () => {
+            setIsLoading(true)
+            try {
+                const user = await fetchUserByTelegramId(initDataRaw)
+                if (user) {
+                    setSubscription(user)
+                }
+            } catch (error) {
+                const errorMessage =
+                    error instanceof Error ? error.message : 'Unknown error occurred'
+                if (errorMessage !== 'Users not found') {
+                    setErrorConnect('ERR_FATCH_USER')
+                }
+                consola.error('Failed to fetch subscription:', error)
+            } finally {
+                setSubscriptionLoaded(true)
+                setIsLoading(false)
+            }
+        }
+
+        fetchSubscription()
+    }, [telegramId, initDataRaw])
 
     useEffect(() => {
         const fetchConfig = async () => {
