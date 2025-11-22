@@ -19,12 +19,12 @@ import { BaseInstallationGuideWidget } from '@/components/BaseInstallationGuideW
 import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 
 export const InstallationGuideWidget = ({
-    appsConfig,
-    user,
-    isCryptoLinkEnabled,
-    redirectLink,
-    enabledLocales
-}: {
+                                            appsConfig,
+                                            user,
+                                            isCryptoLinkEnabled,
+                                            redirectLink,
+                                            enabledLocales
+                                        }: {
     appsConfig: ISubscriptionPageAppConfig['platforms']
     user: GetSubscriptionInfoByShortUuidCommand.Response['response']
     isCryptoLinkEnabled: boolean | undefined
@@ -43,12 +43,12 @@ export const InstallationGuideWidget = ({
     // Otherwise use the full appsConfig
     const filteredConfig = isCryptoLinkEnabled
         ? {
-        ...appsConfig,
-              ios: appsConfig.ios.filter((app) => app.urlScheme.startsWith('happ')),
-              android: appsConfig.android.filter((app) => app.urlScheme.startsWith('happ')),
-              pc: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ')),
-              macos: appsConfig.macos.filter((app) => app.urlScheme.startsWith('happ')),
-              linux: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ'))
+            ...appsConfig,
+            ios: appsConfig.ios.filter((app) => app.urlScheme.startsWith('happ')),
+            android: appsConfig.android.filter((app) => app.urlScheme.startsWith('happ')),
+            pc: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ')),
+            macos: appsConfig.macos.filter((app) => app.urlScheme.startsWith('happ')),
+            linux: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ'))
 
         }
         : appsConfig
@@ -56,17 +56,17 @@ export const InstallationGuideWidget = ({
     useEffect(() => {
         if (lang) {
 
-        if (lang.startsWith('en')) {
-            setCurrentLang('en')
-        } else if (lang.startsWith('fa') && enabledLocales.includes('fa')) {
-            setCurrentLang('fa')
-        } else if (lang.startsWith('ru') && enabledLocales.includes('ru')) {
-            setCurrentLang('ru')
-        } else if (lang.startsWith('zh') && enabledLocales.includes('zh')) {
-            setCurrentLang('zh')
-        } else {
-            setCurrentLang('en')
-        }
+            if (lang.startsWith('en')) {
+                setCurrentLang('en')
+            } else if (lang.startsWith('fa') && enabledLocales.includes('fa')) {
+                setCurrentLang('fa')
+            } else if (lang.startsWith('ru') && enabledLocales.includes('ru')) {
+                setCurrentLang('ru')
+            } else if (lang.startsWith('zh') && enabledLocales.includes('zh')) {
+                setCurrentLang('zh')
+            } else {
+                setCurrentLang('en')
+            }
 
         }
 
@@ -111,18 +111,22 @@ export const InstallationGuideWidget = ({
     const { subscriptionUrl } = user
 
     const openDeepLink = (urlScheme: string, isNeedBase64Encoding: boolean | undefined) => {
+        const isDesktop = os === 'windows' || os === 'linux' || os === 'macos'
+        const defaultRedirect = 'https://maposia.github.io/redirect-page/?redirect_to='
+        const redirectUrl = isDesktop ? (redirectLink || defaultRedirect) : ''
+
         if (isNeedBase64Encoding) {
             const encoded = btoa(`${subscriptionUrl}`)
             const encodedUrl = `${urlScheme}${encoded}`
             window.open(encodedUrl, '_blank')
         } else if (urlScheme.startsWith('happ') && isCryptoLinkEnabled) {
-            // return os === 'windows' || os === 'linux' || os === 'macos'
-                return window.open(`${redirectLink}${user.happ.cryptoLink}`, '_blank')
-                // : window.open(user.happ.cryptoLink, '_blank')
+            return redirectUrl
+                ? window.open(`${redirectUrl}${user.happ.cryptoLink}`, '_blank')
+                : window.open(user.happ.cryptoLink, '_blank')
         } else {
-            // return os === 'windows' || os === 'linux' || os === 'macos'
-                return window.open(`${redirectLink}${urlScheme}${subscriptionUrl}`, '_blank')
-                // : window.open(`${urlScheme}${subscriptionUrl}`)
+            return redirectUrl
+                ? window.open(`${redirectUrl}${urlScheme}${subscriptionUrl}`, '_blank')
+                : window.open(`${urlScheme}${subscriptionUrl}`, '_blank')
         }
     }
 
