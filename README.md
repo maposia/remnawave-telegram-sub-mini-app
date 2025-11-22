@@ -1,5 +1,7 @@
 # Remnawave Telegram Subscription Mini App
 
+**English** | **[Русский](README.ru.md)**
+
 ## Description
 
 This is the **Telegram Subscription App** for Remnawave (https://remna.st/). 
