@@ -1,3 +1,4 @@
+import {consola} from "consola/browser";
 
 export async function fetchAppEnv() {
 
@@ -18,6 +19,6 @@ export async function fetchAppEnv() {
 
 
     } catch (error) {
-        console.error('Ошибка:', error);
+        consola.error('Ошибка:', error);
     }
 }

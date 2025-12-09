@@ -1,3 +1,7 @@
+import { useLocale, useTranslations } from 'next-intl'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { Accordion, rgba, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core'
 import {
     IconAlertCircle,
     IconArrowsUpDown,
@@ -6,24 +10,24 @@ import {
     IconUser,
     IconX
 } from '@tabler/icons-react'
-import { Accordion, rgba, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import dayjs from 'dayjs'
-import {useLocale, useTranslations} from "next-intl";
-import {InfoBlock } from "@/components/InfoBlock/InfoBlock";
-import {IUserData} from "@/types/subscriptionData";
-import {bytesToGigabytes, calculateDaysLeft, getExpirationTextUtil} from "@/lib/utils";
+import { InfoBlock } from '@/components/InfoBlock/InfoBlock'
+
+import { calculateDaysLeft, getExpirationTextUtil } from '@/utils/utils'
+import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 
 dayjs.extend(relativeTime)
 
-export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
-
-    const t = useTranslations();
-    const lang = useLocale();
+export const SubscriptionInfoWidget = ({
+    user
+}: {
+    user: GetSubscriptionInfoByShortUuidCommand.Response['response']
+}) => {
+    const t = useTranslations()
+    const lang = useLocale()
 
     if (!user) return null
 
-    const daysLeft = calculateDaysLeft(user.expireAt)
+    const daysLeft = calculateDaysLeft(user.user.expiresAt)
 
     const formatDate = (dateStr: Date | string) => {
         return dayjs(dateStr).format('DD.MM.YYYY')
@@ -34,7 +38,7 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
         icon: React.ReactNode
         status: string
     } => {
-        if (user.status === 'ACTIVE' && daysLeft > 0) {
+        if (user.user.userStatus === 'ACTIVE' && daysLeft > 0) {
             return {
                 color: 'teal',
                 icon: <IconCheck size={20} />,
@@ -42,7 +46,7 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
             }
         }
         if (
-            (user.status === 'ACTIVE' && daysLeft=== 0) ||
+            (user.user.userStatus === 'ACTIVE' && daysLeft === 0) ||
             (daysLeft >= 0 && daysLeft <= 3)
         ) {
             return {
@@ -78,10 +82,10 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
                 >
                     <Stack gap={3}>
                         <Text fw={500} size="md" truncate>
-                            {user.username}
+                            {user.user.username}
                         </Text>
                         <Text c={daysLeft === 0 ? 'red' : 'dimmed'} size="xs">
-                            {getExpirationTextUtil(user.expireAt, t, lang)}
+                            {getExpirationTextUtil(user.user.expiresAt, t, lang)}
                         </Text>
                     </Stack>
                 </Accordion.Control>
@@ -91,13 +95,13 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
                             color="blue"
                             icon={<IconUser size={20} />}
                             title={t('subscription-info.widget.name')}
-                            value={user.username}
+                            value={user.user.username}
                         />
 
                         <InfoBlock
-                            color={user.status === 'ACTIVE' ? 'green' : 'red'}
+                            color={user.user.userStatus === 'ACTIVE' ? 'green' : 'red'}
                             icon={
-                                user.status === 'ACTIVE' ? (
+                                user.user.userStatus === 'ACTIVE' ? (
                                     <IconCheck size={20} />
                                 ) : (
                                     <IconX size={20} />
@@ -105,7 +109,7 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
                             }
                             title={t('subscription-info.widget.status')}
                             value={
-                                user.status === 'ACTIVE'
+                                user.user.userStatus === 'ACTIVE'
                                     ? t('subscription-info.widget.active')
                                     : t('subscription-info.widget.inactive')
                             }
@@ -116,27 +120,30 @@ export const SubscriptionInfoWidget = ({ user }: { user: IUserData }) => {
                             icon={<IconCalendar size={20} />}
                             title={t('subscription-info.widget.expires')}
                             value={(() => {
-                                if (!user.expireAt) return '—';
+                                if (!user.user.expiresAt) return '—'
 
-                                const fiftyYearsFromNow = new Date();
-                                fiftyYearsFromNow.setFullYear(fiftyYearsFromNow.getFullYear() + 50);
+                                const fiftyYearsFromNow = new Date()
+                                fiftyYearsFromNow.setFullYear(fiftyYearsFromNow.getFullYear() + 50)
 
-                                const expireDate = new Date(user.expireAt);
+                                const expireDate = new Date(user.user.expiresAt)
 
                                 if (expireDate > fiftyYearsFromNow) {
-                                    return '∞';
+                                    return '∞'
                                 } else {
-                                    return formatDate(user.expireAt);
+                                    return formatDate(user.user.expiresAt)
                                 }
                             })()}
-
                         />
 
                         <InfoBlock
                             color="yellow"
                             icon={<IconArrowsUpDown size={20} />}
                             title={t('subscription-info.widget.bandwidth')}
-                            value={`${bytesToGigabytes(user.usedTrafficBytes)} / ${user.trafficLimitBytes === 0 ? '∞' : bytesToGigabytes(user.trafficLimitBytes)}`}
+                            value={`${user.user.trafficUsed} / ${
+                                user.user.trafficLimit === '0'
+                                    ? '∞'
+                                    : user.user.trafficLimit
+                            }`}
                         />
                     </SimpleGrid>
                 </Accordion.Panel>

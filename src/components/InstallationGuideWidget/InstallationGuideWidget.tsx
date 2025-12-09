@@ -1,42 +1,73 @@
-require('dotenv').config();
+import {Link} from "@/components/Link/Link";
+
+require('dotenv').config()
 
 import { useEffect, useLayoutEffect, useState } from 'react'
-import {useLocale, useTranslations} from "next-intl";
-
+import { useLocale, useTranslations } from 'next-intl'
 
 import { Box, Button, Group, Select, Text } from '@mantine/core'
 import { useOs } from '@mantine/hooks'
 import {
     IconBrandAndroid,
-    IconBrandApple,
+    IconBrandApple, IconBrandWindows,
     IconDeviceDesktop,
     IconExternalLink
 } from '@tabler/icons-react'
 
-import {IUserData} from "@/types/subscriptionData";
-import {IAppConfig, IPlatformConfig} from "@/types/appList";
-import {BaseInstallationGuideWidget} from "@/components/BaseInstallationGuideWidget/BaseInstallationGuideWidget";
+import {IAppConfig, ISubscriptionPageAppConfig, TEnabledLocales, TPlatform} from '@/types/appList'
+import { BaseInstallationGuideWidget } from '@/components/BaseInstallationGuideWidget/BaseInstallationGuideWidget'
+import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 
-export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled, redirectLink }: { appsConfig: IPlatformConfig, user: IUserData, isCryptoLinkEnabled: boolean | undefined, redirectLink: string | undefined }) => {
-    const t = useTranslations();
-    const lang = useLocale();
+export const InstallationGuideWidget = ({
+    appsConfig,
+    user,
+    isCryptoLinkEnabled,
+    redirectLink,
+    enabledLocales
+}: {
+    appsConfig: ISubscriptionPageAppConfig['platforms']
+    user: GetSubscriptionInfoByShortUuidCommand.Response['response']
+    isCryptoLinkEnabled: boolean | undefined
+    redirectLink: string | undefined
+    enabledLocales: TEnabledLocales[]
+}) => {
+    const t = useTranslations()
+    const lang = useLocale()
 
     const os = useOs()
 
-    const [currentLang, setCurrentLang] = useState<'en' | 'fa' | 'ru'>('en')
+    const [currentLang, setCurrentLang] = useState<TEnabledLocales>('en')
     const [defaultTab, setDefaultTab] = useState('pc')
 
+    // Filter apps with URL schemes starting with 'happ' if isCryptoLinkEnabled is true
+    // Otherwise use the full appsConfig
+    const filteredConfig = isCryptoLinkEnabled
+        ? {
+        ...appsConfig,
+              ios: appsConfig.ios.filter((app) => app.urlScheme.startsWith('happ')),
+              android: appsConfig.android.filter((app) => app.urlScheme.startsWith('happ')),
+              pc: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ')),
+              macos: appsConfig.macos.filter((app) => app.urlScheme.startsWith('happ')),
+              linux: appsConfig.windows.filter((app) => app.urlScheme.startsWith('happ'))
+
+        }
+        : appsConfig
+
     useEffect(() => {
-        if(lang) {
-            if (lang.startsWith('en')) {
-                setCurrentLang('en')
-            } else if (lang.startsWith('fa')) {
-                setCurrentLang('fa')
-            } else if (lang.startsWith('ru')) {
-                setCurrentLang('ru')
-            } else {
-                setCurrentLang('en')
-            }
+        if (lang) {
+
+        if (lang.startsWith('en')) {
+            setCurrentLang('en')
+        } else if (lang.startsWith('fa') && enabledLocales.includes('fa')) {
+            setCurrentLang('fa')
+        } else if (lang.startsWith('ru') && enabledLocales.includes('ru')) {
+            setCurrentLang('ru')
+        } else if (lang.startsWith('zh') && enabledLocales.includes('zh')) {
+            setCurrentLang('zh')
+        } else {
+            setCurrentLang('en')
+        }
+
         }
 
     }, [lang])
@@ -50,12 +81,16 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
                 setDefaultTab('ios')
                 break
             case 'linux':
+                setDefaultTab('linux')
+                break
             case 'macos':
+                setDefaultTab('macos')
+                break
             case 'windows':
-                setDefaultTab('pc')
+                setDefaultTab('windows')
                 break
             default:
-                setDefaultTab('pc')
+                setDefaultTab('windows')
                 break
         }
     }, [os])
@@ -65,12 +100,13 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
     const hasPlatformApps = {
         ios: appsConfig.ios && appsConfig.ios.length > 0,
         android: appsConfig.android && appsConfig.android.length > 0,
-        pc: appsConfig.pc && appsConfig.pc.length > 0
+        linux: appsConfig.linux && appsConfig.linux.length > 0,
+        macos: appsConfig.macos && appsConfig.macos.length > 0,
+        windows: appsConfig.windows && appsConfig.windows.length > 0,
+        androidTV: appsConfig.androidTV && appsConfig.androidTV.length > 0,
+        appleTV: appsConfig.appleTV && appsConfig.appleTV.length > 0
     }
 
-    if (!hasPlatformApps.ios && !hasPlatformApps.android && !hasPlatformApps.pc) {
-        return null
-    }
 
     const { subscriptionUrl } = user
 
@@ -79,14 +115,14 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
             const encoded = btoa(`${subscriptionUrl}`)
             const encodedUrl = `${urlScheme}${encoded}`
             window.open(encodedUrl, '_blank')
-        } else if(urlScheme.startsWith('happ') && isCryptoLinkEnabled) {
-            return os === 'windows'
-                ? window.open(`${redirectLink}${user.happ.cryptoLink}`, '_blank')
-                : window.open(user.happ.cryptoLink, '_blank')
+        } else if (urlScheme.startsWith('happ') && isCryptoLinkEnabled) {
+            // return os === 'windows' || os === 'linux' || os === 'macos'
+                return window.open(`${redirectLink}${user.happ.cryptoLink}`, '_blank')
+                // : window.open(user.happ.cryptoLink, '_blank')
         } else {
-            return os === 'windows'
-                ? window.open(`${redirectLink}${urlScheme}${subscriptionUrl}`, '_blank')
-                : window.open(`${urlScheme}${subscriptionUrl}`)
+            // return os === 'windows' || os === 'linux' || os === 'macos'
+                return window.open(`${redirectLink}${urlScheme}${subscriptionUrl}`, '_blank')
+                // : window.open(`${urlScheme}${subscriptionUrl}`)
         }
     }
 
@@ -101,10 +137,30 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
             label: 'iOS',
             icon: <IconBrandApple />
         },
-        hasPlatformApps.pc && {
-            value: 'pc',
-            label: t('installation-guide.widget.pc'),
+        hasPlatformApps.macos && {
+            value: 'macos',
+            label: 'macOS',
+            icon: <IconBrandApple />
+        },
+        hasPlatformApps.windows && {
+            value: 'windows',
+            label: 'Windows',
+            icon: <IconBrandWindows />
+        },
+        hasPlatformApps.linux && {
+            value: 'linux',
+            label: 'Linux',
             icon: <IconDeviceDesktop />
+        },
+        hasPlatformApps.androidTV && {
+            value: 'androidTV',
+            label: 'Android TV',
+            icon: <IconBrandAndroid />
+        },
+        hasPlatformApps.appleTV && {
+            value: 'appleTV',
+            label: 'Apple TV',
+            icon: <IconBrandApple />
         }
     ].filter(Boolean) as {
         icon: React.ReactNode
@@ -119,11 +175,11 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
         setDefaultTab(availablePlatforms[0].value)
     }
 
-    const getAppsForPlatform = (platform: 'android' | 'ios' | 'pc') => {
+    const getAppsForPlatform = (platform: TPlatform) => {
         return appsConfig[platform] || []
     }
 
-    const getSelectedAppForPlatform = (platform: 'android' | 'ios' | 'pc') => {
+    const getSelectedAppForPlatform = (platform: TPlatform) => {
         const apps = getAppsForPlatform(platform)
         if (apps.length === 0) return null
         return apps[0]
@@ -138,7 +194,7 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
 
                         return (
                             <Button
-                                component="a"
+                                component={Link}
                                 href={button.buttonLink}
                                 key={index}
                                 leftSection={<IconExternalLink size={16} />}
@@ -193,24 +249,23 @@ export const InstallationGuideWidget = ({ appsConfig, user, isCryptoLinkEnabled,
                         placeholder={t('installation-guide.widget.select-device')}
                         radius="md"
                         size="sm"
-                        style={{ width: 130 }}
+                        style={{ width: 140 }}
                         value={defaultTab}
                     />
                 )}
             </Group>
 
-            {hasPlatformApps[defaultTab as keyof typeof hasPlatformApps] && (
-                <BaseInstallationGuideWidget
-                    appsConfig={appsConfig}
-                    currentLang={currentLang}
-                    firstStepTitle={getPlatformTitle(defaultTab as 'android' | 'ios' | 'pc')}
-                    getAppsForPlatform={getAppsForPlatform}
-                    getSelectedAppForPlatform={getSelectedAppForPlatform}
-                    openDeepLink={openDeepLink}
-                    platform={defaultTab as 'android' | 'ios' | 'pc'}
-                    renderFirstStepButton={renderFirstStepButton}
-                />
-            )}
+            <BaseInstallationGuideWidget
+                appsConfig={filteredConfig}
+                currentLang={currentLang}
+                firstStepTitle={getPlatformTitle(defaultTab as 'android' | 'ios' | 'pc')}
+                getAppsForPlatform={getAppsForPlatform}
+                getSelectedAppForPlatform={getSelectedAppForPlatform}
+                openDeepLink={openDeepLink}
+                isCryptoLinkEnabled={isCryptoLinkEnabled}
+                platform={defaultTab as TPlatform}
+                renderFirstStepButton={renderFirstStepButton}
+            />
         </Box>
     )
 }

@@ -1,128 +1,339 @@
 {
-  "ios": [
-    {
-      "id": "happ",
-      "name": "Happ",
-      "isFeatured": false,
-      "urlScheme": "happ://add/",
-      "installationStep": {
-        "buttons": [
-          {
-            "buttonLink": "https://apps.apple.com/us/app/happ-proxy-utility/id6504287215",
-            "buttonText": {
-              "en": "Open in App Store",
-              "ru": "Открыть в App Store"
+  "config": {
+    "additionalLocales": [
+      "ru"
+    ],
+    "branding": {
+      "name": "Subscription",
+      "logoUrl": "https://remna.st/img/logo.svg",
+      "supportUrl": "https://t.me"
+    }
+  },
+  "platforms": {
+    "android": [
+      {
+        "id": "happ",
+        "name": "Happ",
+        "isFeatured": true,
+        "urlScheme": "happ://add/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://play.google.com/store/apps/details?id=com.happproxy",
+              "buttonText": {
+                "en": "Open in Google Play",
+                "ru": "Открыть в Google Play"
+              }
+            },
+            {
+              "buttonLink": "https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk",
+              "buttonText": {
+                "en": "Download APK",
+                "ru": "Скачать APK"
+              }
             }
+          ],
+          "description": {
+            "en": "Open the page in Google Play and install the app. Or install the app directly from the APK file if Google Play is not working.",
+            "ru": "Откройте страницу в Google Play и установите приложение. Или установите приложение из APK файла напрямую, если Google Play не работает."
           }
-        ],
-        "description": {
-          "en": "Open the page in App Store and install the app. Launch it, in the VPN configuration permission window click Allow and enter your passcode.",
-          "ru": "Откройте страницу в App Store и установите приложение. Запустите его, в окне разрешения VPN-конфигурации нажмите Allow и введите свой пароль."
-        }
-      },
-      "addSubscriptionStep": {
-        "description": {
-          "en": "Click the button below — the app will open and the subscription will be added automatically",
-          "ru": "Нажмите кнопку ниже — приложение откроется, и подписка добавится автоматически."
-        }
-      },
-      "connectAndUseStep": {
-        "description": {
-          "en": "In the main section, click the large power button in the center to connect to VPN. Don't forget to select a server from the server list. If needed, choose another server from the server list.",
-          "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. Не забудьте выбрать сервер в списке серверов. При необходимости выберите другой сервер из списка серверов."
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below to add subscription",
+            "ru": "Нажмите кнопку ниже, чтобы добавить подписку"
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "Open the app and connect to the server",
+            "ru": "Откройте приложение и подключитесь к серверу"
+          }
         }
       }
-    }
-  ],
-  "android": [
-    {
-      "id": "happ",
-      "name": "Happ",
-      "isFeatured": false,
-      "urlScheme": "happ://add/",
-      "installationStep": {
-        "buttons": [
-          {
-            "buttonLink": "https://play.google.com/store/apps/details?id=com.happproxy",
-            "buttonText": {
-              "en": "Open in Google Play",
-              "ru": "Открыть в Google Play"
+    ],
+    "ios": [
+      {
+        "id": "happ",
+        "name": "Happ",
+        "isFeatured": false,
+        "urlScheme": "happ://add/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://apps.apple.com/us/app/happ-proxy-utility/id6504287215",
+              "buttonText": {
+                "en": "Open in App Store [EU]",
+                "ru": "Открыть в App Store [EU]"
+              }
+            },
+            {
+              "buttonLink": "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
+              "buttonText": {
+                "en": "Open in App Store [RU]",
+                "ru": "Открыть в App Store [RU]"
+              }
             }
-          },
-          {
-            "buttonLink": "https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk",
-            "buttonText": {
-              "en": "Download APK",
-              "ru": "Скачать APK"
-            }
+          ],
+          "description": {
+            "en": "Open the page in App Store and install the app. Launch it, in the VPN configuration permission window click Allow and enter your passcode.",
+            "ru": "Откройте страницу в App Store и установите приложение. Запустите его, в окне разрешения VPN-конфигурации нажмите Allow и введите свой пароль."
           }
-        ],
-        "description": {
-          "en": "Open the page in Google Play and install the app. Or install the app directly from the APK file if Google Play is not working.",
-          "ru": "Откройте страницу в Google Play и установите приложение. Или установите приложение из APK файла напрямую, если Google Play не работает."
-        }
-      },
-      "addSubscriptionStep": {
-        "description": {
-          "en": "Click the button below to add subscription",
-          "ru": "Нажмите кнопку ниже, чтобы добавить подписку"
-        }
-      },
-      "connectAndUseStep": {
-        "description": {
-          "en": "Open the app and connect to the server",
-          "ru": "Откройте приложение и подключитесь к серверу"
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below — the app will open and the subscription will be added automatically",
+            "ru": "Нажмите кнопку ниже — приложение откроется, и подписка добавится автоматически."
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "In the main section, click the large power button in the center to connect to VPN. Don't forget to select a server from the server list. If needed, choose another server from the server list.",
+            "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. Не забудьте выбрать сервер в списке серверов. При необходимости выберите другой сервер из списка серверов."
+          }
         }
       }
-    }
-  ],
-  "pc": [
-    {
-      "id": "hiddify",
-      "name": "Hiddify",
-      "isFeatured": false,
-      "urlScheme": "hiddify://import/",
-      "installationStep": {
-        "buttons": [
-          {
-            "buttonLink": "https://github.com/hiddify/hiddify-app/releases/download/v2.5.7/Hiddify-Windows-Setup-x64.exe",
-            "buttonText": {
-              "en": "Windows",
-              "ru": "Windows"
+    ],
+    "linux": [],
+    "macos": [
+      {
+        "id": "new-app-macos-1755336774902",
+        "name": "Happ",
+        "isFeatured": false,
+        "urlScheme": "happ://add/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://apps.apple.com/us/app/happ-proxy-utility/id6504287215",
+              "buttonText": {
+                "en": "Open in App Store [EU]",
+                "ru": "Открыть в App Store [EU]"
+              }
+            },
+            {
+              "buttonLink": "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
+              "buttonText": {
+                "en": "Open in App Store [RU]",
+                "ru": "Открыть в App Store [RU]"
+              }
             }
-          },
-          {
-            "buttonLink": "https://github.com/hiddify/hiddify-app/releases/download/v2.5.7/Hiddify-MacOS.dmg",
-            "buttonText": {
-              "en": "macOS",
-              "ru": "macOS"
-            }
-          },
-          {
-            "buttonLink": "https://github.com/hiddify/hiddify-app/releases/download/v2.5.7/Hiddify-Linux-x64.AppImage",
-            "buttonText": {
-              "en": "Linux",
-              "ru": "Linux"
-            }
+          ],
+          "description": {
+            "en": "Open the page in App Store and install the app. Launch it, in the VPN configuration permission window click Allow and enter your passcode.",
+            "ru": "Откройте страницу в App Store и установите приложение. Запустите его, в окне разрешения VPN-конфигурации нажмите Allow и введите свой пароль."
           }
-        ],
-        "description": {
-          "en": "In the main section, click the large power button in the center to connect to VPN. If needed, select a different server in the Proxy section",
-          "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. При необходимости выберите другой сервер в разделе Прокси."
-        }
-      },
-      "addSubscriptionStep": {
-        "description": {
-          "en": "Click the button below to add subscription",
-          "ru": "Нажмите кнопку ниже, чтобы добавить подписку"
-        }
-      },
-      "connectAndUseStep": {
-        "description": {
-          "en": "In the main section, click the large power button in the center to connect to VPN. Don't forget to select a server from the server list. If needed, select a different server from the server list.",
-          "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. Не забудьте выбрать сервер в списке серверов. При необходимости выберите другой сервер из списка серверов."
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below — the app will open and the subscription will be added automatically",
+            "ru": "Нажмите кнопку ниже — приложение откроется, и подписка добавится автоматически."
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "In the main section, click the large power button in the center to connect to VPN. Don't forget to select a server from the server list. If needed, choose another server from the server list.",
+            "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. Не забудьте выбрать сервер в списке серверов. При необходимости выберите другой сервер из списка серверов."
+          }
         }
       }
-    }
-  ]
+    ],
+    "windows": [
+      {
+        "id": "new-app-windows-1755336575429",
+        "name": "V2rayTun",
+        "isFeatured": false,
+        "urlScheme": "v2raytun://import/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://storage.v2raytun.com/v2RayTun_Setup.exe",
+              "buttonText": {
+                "en": "Download",
+                "ru": "Скачать"
+              }
+            }
+          ],
+          "description": {
+            "en": "In the main section, click the large power button in the center to connect to VPN.",
+            "ru": "В главном разделе нажмите большую кнопку питания в центре, чтобы подключиться к VPN. "
+          }
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below to add subscription",
+            "ru": "Нажмите кнопку ниже, чтобы добавить подписку"
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "In the main section, click the large power button in the center to connect to VPN. Don't forget to select a server from the server list. If needed, select a different server from the server list.",
+            "ru": "В главном разделе нажмите большую кнопку включения в центре для подключения к VPN. Не забудьте выбрать сервер в списке серверов. При необходимости выберите другой сервер из списка серверов."
+          }
+        }
+      }
+    ],
+    "androidTV": [
+      {
+        "id": "happ",
+        "name": "Happ",
+        "isFeatured": true,
+        "urlScheme": "happ://add/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://play.google.com/store/apps/details?id=com.happproxy",
+              "buttonText": {
+                "en": "Open in Google Play",
+                "fa": "باز کردن در Google Play",
+                "ru": "Открыть в Google Play",
+                "zh": "在 Google Play 打开"
+              }
+            },
+            {
+              "buttonLink": "https://github.com/Happ-proxy/happ-android/releases/latest/download/Happ.apk",
+              "buttonText": {
+                "en": "Download APK",
+                "fa": "دانلود APK",
+                "ru": "Скачать APK",
+                "zh": "下载 APK"
+              }
+            }
+          ],
+          "description": {
+            "en": "Open the page in Google Play and install the app. Or install the app directly from the APK file if Google Play is not working.",
+            "fa": "صفحه را در Google Play باز کنید و برنامه را نصب کنید. یا برنامه را مستقیماً از فایل APK نصب کنید، اگر Google Play کار نمی کند.",
+            "ru": "Откройте страницу в Google Play и установите приложение. Или установите приложение из APK файла напрямую, если Google Play не работает.",
+            "zh": "在 Google Play 打开页面并安装应用。如果 Google Play 无法使用，可直接通过 APK 文件安装应用。"
+          }
+        },
+        "additionalBeforeAddSubscriptionStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://www.happ.su/main/ru/faq/android-tv",
+              "buttonText": {
+                "en": "In Russian",
+                "fa": "به زبان روسی",
+                "ru": "На русском",
+                "zh": "俄语"
+              }
+            },
+            {
+              "buttonLink": "https://www.happ.su/main/faq/android-tv",
+              "buttonText": {
+                "en": "In English",
+                "fa": "به زبان انگلیسی",
+                "ru": "На английском",
+                "zh": "英语"
+              }
+            }
+          ],
+          "description": {
+            "en": "Detailed instructions to help you set up Happ on your device.",
+            "fa": "راهنمای دقیق برای کمک به تنظیم Happ روی دستگاه شما.",
+            "ru": "Подробные инструкции, чтобы помочь вам настроить Happ на вашем устройстве.",
+            "zh": "详细说明，帮助您在设备上设置 Happ。"
+          },
+          "title": {
+            "en": "Installation instructions",
+            "fa": "دستورالعمل نصب",
+            "ru": "Инструкции по установке",
+            "zh": "安装说明"
+          }
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below to add subscription, if you opened the subscription page on your TV",
+            "fa": "برای افزودن اشتراک روی دکمه زیر کلیک کنید، اگر صفحه اشتراک را روی تلویزیون باز کرده‌اید",
+            "ru": "Нажмите кнопку ниже, чтобы добавить подписку, если вы открыли страницу подписки на телевизоре",
+            "zh": "如果你已在电视上打开订阅页面，点击下方按钮以添加订阅"
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "Open the app and connect to the server",
+            "fa": "برنامه را باز کنید و به سرور متصل شوید",
+            "ru": "Откройте приложение и подключитесь к серверу",
+            "zh": "打开应用并连接到服务器"
+          }
+        }
+      }
+    ],
+    "appleTV": [
+      {
+        "id": "happ",
+        "name": "Happ",
+        "isFeatured": true,
+        "urlScheme": "happ://add/",
+        "installationStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://apps.apple.com/us/app/happ-proxy-utility-for-tv/id6748297274",
+              "buttonText": {
+                "en": "App Store",
+                "fa": "App Store",
+                "ru": "App Store",
+                "zh": "App Store"
+              }
+            }
+          ],
+          "description": {
+            "en": "Open the page in the App Store on your Apple TV and install the app. Launch it, allow VPN configuration if prompted, and enter your passcode if required.",
+            "fa": "صفحه را در App Store بر روی Apple TV باز کنید و برنامه را نصب کنید. آن را اجرا کنید، در صورت درخواست مجوز پیکربندی VPN را بدهید و در صورت نیاز رمز عبور خود را وارد کنید.",
+            "ru": "Откройте страницу в App Store на Apple TV и установите приложение. Запустите его, предоставьте разрешение на VPN-конфигурацию, если потребуется, и введите свой пароль.",
+            "zh": "在 Apple TV 的 App Store 打开页面并安装应用。启动后，如有提示请允许 VPN 配置，并在需要时输入您的密码。"
+          }
+        },
+        "additionalBeforeAddSubscriptionStep": {
+          "buttons": [
+            {
+              "buttonLink": "https://www.happ.su/main/ru/faq/android-tv",
+              "buttonText": {
+                "en": "In Russian",
+                "fa": "به زبان روسی",
+                "ru": "На русском",
+                "zh": "俄语"
+              }
+            },
+            {
+              "buttonLink": "https://www.happ.su/main/faq/android-tv",
+              "buttonText": {
+                "en": "In English",
+                "fa": "به زبان انگلیسی",
+                "ru": "На английском",
+                "zh": "英语"
+              }
+            }
+          ],
+          "description": {
+            "en": "Detailed instructions to help you set up Happ on your device.",
+            "fa": "راهنمای دقیق برای کمک به تنظیم Happ روی دستگاه شما.",
+            "ru": "Подробные инструкции, чтобы помочь вам настроить Happ на вашем устройстве.",
+            "zh": "详细说明，帮助您在设备上设置 Happ。"
+          },
+          "title": {
+            "en": "Installation instructions",
+            "fa": "دستورالعمل نصب",
+            "ru": "Инструкции по установке",
+            "zh": "安装说明"
+          }
+        },
+        "addSubscriptionStep": {
+          "description": {
+            "en": "Click the button below to add subscription, if you opened the subscription page on your TV",
+            "fa": "برای افزودن اشتراک روی دکمه زیر کلیک کنید، اگر صفحه اشتراک را روی تلویزیون باز کرده‌اید",
+            "ru": "Нажмите кнопку ниже, чтобы добавить подписку, если вы открыли страницу подписки на телевизоре",
+            "zh": "如果你已在电视上打开订阅页面，点击下方按钮以添加订阅"
+          }
+        },
+        "connectAndUseStep": {
+          "description": {
+            "en": "Open the app and connect to the server",
+            "fa": "برنامه را باز کنید و به سرور متصل شوید",
+            "ru": "Откройте приложение и подключитесь к серверу",
+            "zh": "打开应用并连接到服务器"
+          }
+        }
+      }
+    ]
+  }
 }

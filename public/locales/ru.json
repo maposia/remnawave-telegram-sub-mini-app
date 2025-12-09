@@ -6,6 +6,7 @@
         "no-sub": "У вас нет подписки",
         "podpiska": "Подписка",
         "error-connect": "Ошибка подключения",
+        "error-parse-appconfig": "Ошибка обработки App-config",
         "refresh": "Обновить"
       }
     }
@@ -17,7 +18,9 @@
       "connect-and-use": "Подключите и используйте",
       "installation": "Установка",
       "select-device": "Выберите устройство",
-      "pc": "ПК"
+      "pc": "ПК",
+      "no-data-for-cryptolink": "Нет конфигурации для приложений поддерживающих криптоссылки",
+      "no-data-for-app": "Нет конфигурации для данного типа устройств"
     },
     "ios": {
       "widget": {
@@ -60,7 +63,8 @@
     "util": {
       "expires-in": "Истекает {expiration}",
       "expired": "Истекла {expiration}",
-      "unknown": "Неизвестно"
+      "unknown": "Неизвестно",
+      "infinity": "Действителен до: ∞"
     }
   }
 }

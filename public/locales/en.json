@@ -6,6 +6,7 @@
         "no-sub": "You don't have a subscription",
         "podpiska": "Subscription",
         "error-connect": "Connection error",
+        "error-parse-appconfig": "Ошибка обработки App-config",
         "refresh": "Refresh"
       }
     }
@@ -17,7 +18,10 @@
       "connect-and-use": "Connect and use",
       "installation": "Installation",
       "select-device": "Select device",
-      "pc": "PC"
+      "pc": "PC",
+      "no-data-for-cryptolink": "No configuration data for cryptolinks",
+      "no-data-for-app": "No configuration available for this device type"
+
     },
     "ios": {
       "widget": {
@@ -59,8 +63,9 @@
   "get-expiration-text": {
     "util": {
       "expires-in": "Expires {expiration}",
-      "expired": "Expired {expiration} ago",
-      "unknown": "Unknown"
+      "expired": "Expired {expiration}",
+      "unknown": "Unknown",
+      "infinity": "Valid until: ∞"
     }
   }
 }

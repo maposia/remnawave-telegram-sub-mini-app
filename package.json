@@ -1,6 +1,6 @@
 {
-  "name": "useownmini",
-  "version": "0.1.0",
+  "name": "remnawave-telegram-sub-mini-app",
+  "version": "2.2.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,36 +10,44 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tabler/icons-react": "^3.31.0",
-    "@telegram-apps/sdk-react": "^2.0.22",
-    "dotenv": "^16.4.7",
-    "eruda": "^3.0.1",
-    "lottie-react": "^2.4.1",
-    "next": "14.2.4",
-    "next-intl": "^3.17.6",
-    "ofetch": "^1.4.1",
-    "pretty-bytes": "^6.1.1",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-icons": "^5.5.0",
-    "uqr": "^0.1.2"
-  },
-  "devDependencies": {
     "@mantine/core": "^7.17.3",
     "@mantine/dates": "^7.17.3",
     "@mantine/hooks": "^7.17.3",
     "@mantine/modals": "^7.17.3",
     "@mantine/notifications": "^7.17.3",
     "@mantine/nprogress": "^7.17.3",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@remnawave/backend-contract": "0.7.9",
+    "@tabler/icons-react": "^3.31.0",
+    "@telegram-apps/init-data-node": "^2.0.10",
+    "@telegram-apps/sdk-react": "^3.3.6",
+    "axios": "^1.9.0",
+    "consola": "^3.4.2",
     "dayjs": "^1.11.13",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4",
+    "dotenv": "^16.4.7",
+    "eruda": "^3.0.1",
+    "lottie-react": "^2.4.1",
+    "next": "15.5.7",
+    "next-intl": "^3.17.6",
+    "ofetch": "^1.4.1",
     "postcss": "^8.5.3",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
+    "pretty-bytes": "^6.1.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-icons": "^5.5.0",
+    "uqr": "^0.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "19.1.9",
+    "@types/react-dom": "19.1.7",
+    "eslint": "^8",
+    "eslint-config-next": "15.4.5",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "19.1.9",
+    "@types/react-dom": "19.1.7"
   }
 }

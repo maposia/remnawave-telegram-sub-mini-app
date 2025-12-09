@@ -1,22 +1,29 @@
-import { subscriptionsResponse } from "@/types/subscriptionData";
+import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 
-export async function fetchUserByTelegramId(telegramId: number) {
+export async function fetchUserByTelegramId(initData: string
+): Promise<GetSubscriptionInfoByShortUuidCommand.Response['response']> {
     try {
-        const res = await fetch(`/api/getSubscriptionInfo?telegramId=${telegramId}`, {
-            method: 'GET',
+        const res = await fetch(`/api/getSubscriptionInfo`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-        });
+            body: JSON.stringify({ initData })
+        })
 
         if (!res.ok) {
-            if (res.status === 404) {
+            if (res.status === 422) {
                 const error = await res.json()
                 throw new Error(error.message)
             }
+            if(res.status === 400) {
+                throw new Error('Bad request')
+            }
+            if(res.status === 500) {
+                throw new Error('Connect to server')
+            }
         }
-        const { response }: subscriptionsResponse = await res.json();
-        return response[0];
+        return await res.json()
     } catch (error) {
         throw error
     }

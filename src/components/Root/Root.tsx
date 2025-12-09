@@ -23,7 +23,6 @@ import {Loading} from "@/components/Loading/Loading";
 import { useDidMount } from '@/hooks/useDidMount';
 import { useClientOnce } from '@/hooks/useClientOnce';
 import { setLocale } from '@/core/i18n/locale';
-import { init } from '@/core/init';
 import {theme} from "@/config/theme";
 
 
@@ -46,20 +45,13 @@ function RootInner({ children }: PropsWithChildren) {
         miniApp.backgroundColor();
     }
 
-    if (viewport.expand.isAvailable()) {
-        viewport.expand();
-    }
-
-  // Initialize the library.
-  useClientOnce(() => {
-    init(debug);
-  });
-
   const initDataUser = useSignal(initData.user);
   // Set the user locale.
-  useEffect(() => {
-    initDataUser && setLocale(initDataUser.languageCode);
-  }, [initDataUser]);
+    useEffect(() => {
+        if (initDataUser) {
+            setLocale(initDataUser.language_code);
+        }
+    }, [initDataUser]);
 
   return (
       <>

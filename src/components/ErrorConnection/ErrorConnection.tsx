@@ -1,7 +1,7 @@
 import {Box, Button, Stack} from "@mantine/core";
 import classes from "@/app/app.module.css";
 import Lottie from "lottie-react";
-import errorConnect from "@public/assets/error-connect.json";
+import errorConnect from "@public/assets/anamations/error-connect.json";
 import {useTranslations} from "next-intl";
 
 export function ErrorConnection() {

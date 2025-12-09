@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 import Image from "next/image";
 import {Center, Flex, Title} from "@mantine/core";
+import {consola} from "consola/browser";
 
 export function ErrorPage({
   error,
-  reset,
 }: {
   error: Error & { digest?: string }
   reset?: () => void
 }) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
+    consola.error(error);
   }, [error]);
 
   return (
@@ -25,7 +24,6 @@ export function ErrorPage({
                 width={144}
                 height={144}
             />
-      {reset && <button onClick={() => reset()}>Try again</button>}
             </Flex>
         </Center>
     </div>
