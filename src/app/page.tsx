@@ -23,6 +23,7 @@ import classes from './app.module.css'
 import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 import {isOldFormat} from "@/utils/migrateConfig";
 import {AnimatedBackground} from "@/components/AnimatedBackground/AnimatedBackground";
+import {Snowfall} from "react-snowfall";
 
 export default function Home() {
     const t = useTranslations()
@@ -40,6 +41,7 @@ export default function Home() {
         cryptoLink: boolean
         buyLink: string
         redirectLink: string
+        isSnowflakeEnabled: boolean
     } | null>(null)
 
     const [errorConnect, setErrorConnect] = useState<string | null>(null)
@@ -184,8 +186,8 @@ export default function Home() {
 
     if (subscriptionLoaded && subscription)
         return (
-            <Container my="xl" size="xl">
-                <AnimatedBackground/>
+            <Container style={{position: 'relative'}}  my="xl" size="xl">
+                {publicEnv?.isSnowflakeEnabled ? <Snowfall style={{ position: 'fixed' }} /> : <AnimatedBackground/>}
                 <Stack gap="xl">
                     <Group justify="space-between">
                         <Group gap="xs">
@@ -227,6 +229,8 @@ export default function Home() {
                     </Stack>
                 </Stack>
                 <LocaleSwitcher />
+                {/*</div>*/}
+
             </Container>
         )
 

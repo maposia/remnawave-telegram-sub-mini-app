@@ -14,7 +14,7 @@ export async function fetchAppEnv() {
             throw new Error('Ошибка при запросе данных.');
         }
 
-        const response  : { cryptoLink: boolean; buyLink: string, redirectLink: string } = await res.json();
+        const response  : { cryptoLink: boolean; buyLink: string, redirectLink: string, isSnowflakeEnabled: boolean } = await res.json();
         return response
 
 

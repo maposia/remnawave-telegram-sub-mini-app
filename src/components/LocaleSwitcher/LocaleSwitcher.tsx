@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl';
 import {FC, useState} from 'react';
 
-import {ActionIcon, Button, Flex, Group, Menu, Text} from "@mantine/core";
+import {ActionIcon, Flex, Menu, Text} from "@mantine/core";
 import { localesMap } from '@/core/i18n/config';
 import { setLocale } from '@/core/i18n/locale';
 import { Locale } from '@/core/i18n/types';

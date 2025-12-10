@@ -18,10 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Определяем ветку в зависимости от формата тега
-          # Если тег начинается с dev-, используем ветку dev;
-          # иначе используем ветку main.
-          ref: ${{ contains(github.ref_name, 'dev-') && 'dev' || 'main' }} # логика проверки
+          ref: ${{ contains(github.ref_name, 'dev-') && 'dev' || 'main' }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
