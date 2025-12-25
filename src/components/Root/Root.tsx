@@ -110,21 +110,29 @@ function RootInner({ children }: PropsWithChildren) {
     }, [initDataRaw])
 
     useEffect(() => {
-        if (!subscription) return () => {}
+        if (!subscription) return
+
+        const targetUuid = '00000000-0000-0000-0000-000000000000'
+        let retryCount = 0
+        const maxRetries = 3
 
         const fetchConfig = async () => {
             try {
-                const configs = await ofetch<TConfigsMap>(`/app-data.json?v=${Date.now()}`, {
-                    parseResponse: JSON.parse
+                const configs = await ofetch<TConfigsMap>(`/api/app-config`, {
+                    query: { v: Date.now() }
                 })
 
-                let tempConfig
-                const targetUuid = '00000000-0000-0000-0000-000000000000'
+                const configId = subscription.subpageConfigUuid || targetUuid
+                const tempConfig = configs[configId]
 
-                if (subscription?.subpageConfigUuid) {
-                    tempConfig = configs[subscription?.subpageConfigUuid]
-                } else {
-                    tempConfig = configs[targetUuid]
+                if (!tempConfig) {
+                    if (retryCount < maxRetries) {
+                        retryCount++
+                        consola.warn(`Config ${configId} not found, retrying... (${retryCount})`)
+                        setTimeout(fetchConfig, 2000)
+                        return
+                    }
+                    throw new Error(`Config with UUID ${configId} not found in app-data`)
                 }
 
                 const parsedConfig =
@@ -132,15 +140,21 @@ function RootInner({ children }: PropsWithChildren) {
 
                 if (!parsedConfig.success) {
                     setErrorConnect('ERR_PARSE_APPCONFIG')
-                    consola.error('Failed to parse app config:', parsedConfig.error)
+                    consola.error('Failed to parse app config:', parsedConfig.error.format())
                     return
                 }
 
                 configActions.setConfig(parsedConfig.data)
-            } catch (error) {
+                setIsLoading(false)
+            } catch (error: any) {
+                if (error.response?.status === 404 && retryCount < maxRetries) {
+                    retryCount++
+                    setTimeout(fetchConfig, 2000)
+                    return
+                }
+
                 setErrorConnect('ERR_PARSE_APPCONFIG')
                 consola.error('Failed to fetch app config:', error)
-            } finally {
                 setIsLoading(false)
             }
         }
