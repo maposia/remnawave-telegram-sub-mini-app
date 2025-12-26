@@ -9,7 +9,7 @@ import '@mantine/nprogress/styles.layer.css'
 
 initDayjs()
 
-import { Center, Container, MantineProvider, Stack, Title } from '@mantine/core'
+import { Center, Container, DirectionProvider, MantineProvider, Stack, Title } from '@mantine/core'
 
 import {
     initData,
@@ -208,14 +208,18 @@ export function Root(props: PropsWithChildren) {
     const didMount = useDidMount()
 
     return didMount ? (
-        <MantineProvider defaultColorScheme="dark" theme={theme}>
-            <ErrorBoundary fallback={ErrorPage}>
-                <RootInner {...props} />
-            </ErrorBoundary>
-        </MantineProvider>
+        <DirectionProvider>
+            <MantineProvider defaultColorScheme="dark" theme={theme}>
+                <ErrorBoundary fallback={ErrorPage}>
+                    <RootInner {...props} />
+                </ErrorBoundary>
+            </MantineProvider>
+        </DirectionProvider>
     ) : (
-        <MantineProvider defaultColorScheme="dark" theme={theme}>
-            <Loading />
-        </MantineProvider>
+        <DirectionProvider>
+            <MantineProvider defaultColorScheme="dark" theme={theme}>
+                <Loading />
+            </MantineProvider>
+        </DirectionProvider>
     )
 }
