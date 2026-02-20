@@ -1,6 +1,8 @@
 import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
+import { consola } from 'consola'
 
-export async function fetchUserByTelegramId(initData: string
+export async function fetchUserByTelegramId(
+    initData: string
 ): Promise<GetSubscriptionInfoByShortUuidCommand.Response['response']> {
     try {
         const res = await fetch(`/api/getSubscriptionInfo`, {
@@ -16,15 +18,16 @@ export async function fetchUserByTelegramId(initData: string
                 const error = await res.json()
                 throw new Error(error.message)
             }
-            if(res.status === 400) {
+            if (res.status === 400) {
                 throw new Error('Bad request')
             }
-            if(res.status === 500) {
+            if (res.status === 500) {
                 throw new Error('Connect to server')
             }
         }
         return await res.json()
     } catch (error) {
+        consola.error('Fail get user by telegram Id:', error)
         throw error
     }
 }
