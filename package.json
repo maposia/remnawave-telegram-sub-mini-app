@@ -1,6 +1,6 @@
 {
     "name": "remnawave-telegram-sub-mini-app",
-    "version": "3.2.3",
+    "version": "3.2.4",
     "private": true,
     "scripts": {
         "dev": "next dev",
@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@gfazioli/mantine-spinner": "^2.3.9",
+        "@kastov/cryptohapp": "^1.1.2",
         "@mantine/core": "^8.3.10",
         "@mantine/dates": "^8.3.10",
         "@mantine/hooks": "^8.3.10",
@@ -63,8 +64,8 @@
         "@types/react-dom": "19.1.7",
         "eslint": "^8",
         "eslint-config-next": "15.4.5",
-        "typescript": "^5",
-        "standard-version": "^9.5.0"
+        "standard-version": "^9.5.0",
+        "typescript": "^5"
     },
     "overrides": {
         "@types/react": "19.1.9",
