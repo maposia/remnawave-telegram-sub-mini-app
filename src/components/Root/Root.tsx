@@ -58,6 +58,7 @@ import { useAppConfigStoreActions } from '@/store/appConfig'
 import { SubscribeCta } from '@/components/SubscribeCTA/SubscribeCTA'
 import { LanguagePicker } from '@/components/LanguagePicker/LanguagePicker'
 import { useTranslations } from 'next-intl'
+import { AxiosError } from 'axios'
 
 type TConfigsMap = Record<string, TSubscriptionPageRawConfig>
 
@@ -116,6 +117,12 @@ function RootInner({ children }: PropsWithChildren) {
                         })
                     }
                 } catch (error) {
+                    if (error instanceof AxiosError && error.code === 'ERR_GET_SUB_LINK') {
+                        setErrorConnect('ERR_GET_SUB_LINK')
+                        consola.error('Failed to fetch sub link:', error)
+                        return
+                    }
+
                     const errorMessage =
                         error instanceof Error ? error.message : 'Unknown error occurred'
                     if (errorMessage !== 'Users not found') {
@@ -204,6 +211,8 @@ function RootInner({ children }: PropsWithChildren) {
                         <Title style={{ textAlign: 'center' }} order={4}>
                             {errorConnect === 'ERR_FATCH_USER'
                                 ? 'Error get user'
+                                : errorConnect === 'ERR_GET_SUB_LINK'
+                                  ? 'Error get sub link'
                                 : errorConnect === 'ERR_PARSE_APPCONFIG'
                                   ? 'Error parsing app config'
                                   : JSON.stringify(errorConnect)}

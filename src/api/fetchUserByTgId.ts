@@ -1,5 +1,6 @@
 import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 import { consola } from 'consola'
+import { AxiosError } from 'axios'
 
 export async function fetchUserByTelegramId(
     initData: string
@@ -13,10 +14,22 @@ export async function fetchUserByTelegramId(
             body: JSON.stringify({ initData })
         })
 
-        if (!res.ok) {
+        if (res.ok) {
+            return await res.json()
+        } else {
+            let errorBody: { message?: string } | null = null
+            try {
+                errorBody = await res.json()
+            } catch {
+                errorBody = null
+            }
+
+            if (errorBody?.message === 'Error get sub link') {
+                throw new AxiosError('Error get sub link', 'ERR_GET_SUB_LINK')
+            }
+
             if (res.status === 422) {
-                const error = await res.json()
-                throw new Error(error.message)
+                throw new Error(errorBody?.message ?? 'Users not found')
             }
             if (res.status === 400) {
                 throw new Error('Bad request')
@@ -24,8 +37,9 @@ export async function fetchUserByTelegramId(
             if (res.status === 500) {
                 throw new Error('Connect to server')
             }
+
+            throw new AxiosError('Error get sub link', 'ERR_GET_SUB_LINK')
         }
-        return await res.json()
     } catch (error) {
         consola.error('Fail get user by telegram Id:', error)
         throw error

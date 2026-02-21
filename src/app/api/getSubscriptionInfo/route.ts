@@ -7,6 +7,7 @@ import {
     GetSubscriptionInfoByShortUuidCommand,
     GetUserByTelegramIdCommand
 } from '@remnawave/backend-contract'
+import { createHappCryptoLink } from '@kastov/cryptohapp'
 import { AxiosError } from 'axios'
 import { consola } from 'consola/browser'
 import { isValid, parse } from '@telegram-apps/init-data-node'
@@ -115,13 +116,15 @@ export async function POST(request: Request) {
             response.links = []
             response.ssConfLinks = {}
 
-            const subscriptionInfo = await instance.request<EncryptHappCryptoLinkCommand.Response>({
-                method: EncryptHappCryptoLinkCommand.endpointDetails.REQUEST_METHOD,
-                url: EncryptHappCryptoLinkCommand.url,
-                data: { linkToEncrypt: response.subscriptionUrl }
-            })
+            const cryptoLink = createHappCryptoLink(response.subscriptionUrl, 'v4', true)
 
-            response.subscriptionUrl = subscriptionInfo.data.response.encryptedLink
+            if (cryptoLink) {
+                response.subscriptionUrl = cryptoLink
+            } else {
+                return new Response(JSON.stringify({ message: 'Error get sub link' }), {
+                    status: 502
+                })
+            }
         }
 
         return new Response(
