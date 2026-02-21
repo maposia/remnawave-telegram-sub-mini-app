@@ -1,6 +1,6 @@
 {
     "name": "remnawave-telegram-sub-mini-app",
-    "version": "3.2.4",
+    "version": "3.2.5",
     "private": true,
     "scripts": {
         "dev": "next dev",
