@@ -11,7 +11,10 @@
                 "redirect-message": "The configuration will be added to your app in {seconds} seconds",
                 "redirect-link-missing": "Configuration link not found",
                 "redirect-add-now": "Add now",
-                "redirect-check-link": "Check the link parameters and try again."
+                "redirect-check-link": "Check the link parameters and try again.",
+                "switch-profile": "Switch profile",
+                "select-profile": "Select profile",
+                "profile-switch-error": "Failed to switch profile. Please try again."
             }
         }
     }

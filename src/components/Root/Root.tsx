@@ -61,6 +61,7 @@ import { SubscribeCta } from '@/components/SubscribeCTA/SubscribeCTA'
 import { LanguagePicker } from '@/components/LanguagePicker/LanguagePicker'
 import { useTranslations } from 'next-intl'
 import { AxiosError } from 'axios'
+import { ProfileSwitcher } from '@/components/ProfileSwitcher'
 
 type TConfigsMap = Record<string, TSubscriptionPageRawConfig>
 
@@ -203,7 +204,7 @@ function RootInner({ children }: PropsWithChildren) {
             abortController.abort()
             if (retryTimeout) clearTimeout(retryTimeout)
         }
-    }, [configActions, isLoading, subscription?.subpageConfigUuid])
+    }, [configActions, isLoading, subscription?.subpageConfigUuid, subscription?.user.shortUuid])
 
     useEffect(() => {
         const fetchAppConfig = async () => {
@@ -260,6 +261,11 @@ function RootInner({ children }: PropsWithChildren) {
                         <Title style={{ textAlign: 'center' }} order={4}>
                             {t('main.page.component.no-sub')}
                         </Title>
+                        {subscription && (
+                            <Center>
+                                <ProfileSwitcher size="md" />
+                            </Center>
+                        )}
                         <SubscribeCta />
 
                         <Center mt={20}>

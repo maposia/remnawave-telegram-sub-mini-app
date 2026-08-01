@@ -1,17 +1,18 @@
-import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 import { consola } from 'consola'
 import { AxiosError } from 'axios'
+import { ExtendedSubscription } from '@/store/subscriptionInfo/interfaces'
 
 export async function fetchUserByTelegramId(
-    initData: string
-): Promise<GetSubscriptionInfoByShortUuidCommand.Response['response']> {
+    initData: string,
+    shortUuid?: string
+): Promise<ExtendedSubscription> {
     try {
         const res = await fetch(`/api/getSubscriptionInfo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ initData })
+            body: JSON.stringify({ initData, shortUuid })
         })
 
         if (res.ok) {
@@ -33,6 +34,9 @@ export async function fetchUserByTelegramId(
             }
             if (res.status === 400) {
                 throw new Error('Bad request')
+            }
+            if (res.status === 403) {
+                throw new Error(errorBody?.message ?? 'Profile not found')
             }
             if (res.status === 500) {
                 throw new Error('Connect to server')

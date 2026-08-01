@@ -5,6 +5,7 @@ import classes from './subscriptionInfoCards.module.css'
 import { useTranslation } from '@/hooks/useTranslations'
 import { useSubscription } from '@/store/subscriptionInfo'
 import { formatDate } from '@/utils/configParser'
+import { ProfileSwitcher } from '@/components/ProfileSwitcher'
 
 type ColorVariant = 'blue' | 'cyan' | 'green' | 'orange' | 'red' | 'teal' | 'violet' | 'yellow'
 
@@ -23,7 +24,7 @@ interface CardItemProps {
     color: ColorVariant
     icon: React.ReactNode
     label: string
-    value: string
+    value: React.ReactNode
 }
 
 const CardItem = ({ icon, label, value, color }: CardItemProps) => {
@@ -51,7 +52,7 @@ const CardItem = ({ icon, label, value, color }: CardItemProps) => {
                     >
                         {label}
                     </Text>
-                    <Text c="white" className={classes.value} fw={600} size="sm">
+                    <Text c="white" className={classes.value} component="div" fw={600} size="sm">
                         {value}
                     </Text>
                 </Stack>
@@ -85,7 +86,7 @@ export const SubscriptionInfoCards = () => {
                 color="blue"
                 icon={<IconUserScan size={18} />}
                 label={t(baseTranslations.name)}
-                value={user.username}
+                value={<ProfileSwitcher />}
             />
 
             <CardItem

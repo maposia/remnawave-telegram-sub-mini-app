@@ -10,6 +10,7 @@ export interface IActions {
         getInitialState: () => IState
         resetState: () => Promise<void>
         setConfig: (config: TSubscriptionPageRawConfig) => void
+        setConfigLoading: () => void
         setLanguage: (lang: TSubscriptionPageLanguageCode) => void
     }
 }

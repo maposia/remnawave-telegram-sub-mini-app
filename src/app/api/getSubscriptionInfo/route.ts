@@ -19,6 +19,8 @@ export async function POST(request: Request) {
 
     const parsedBody = await request.json()
     const initData = parsedBody.initData
+    const requestedShortUuid =
+        typeof parsedBody.shortUuid === 'string' ? parsedBody.shortUuid : undefined
 
     try {
         let isDataValid = false
@@ -37,25 +39,44 @@ export async function POST(request: Request) {
         if (!user || !user.id)
             return new Response(JSON.stringify({ error: 'Invalid user data' }), { status: 400 })
 
-        const result = await instance.request<GetUsersStreamCommand.Response>({
-            method: GetUsersStreamCommand.endpointDetails.REQUEST_METHOD,
-            url: GetUsersStreamCommand.url,
-            params: {
-                telegramId: user.id.toString(),
-                size: 1
-            }
-        })
+        const panelUsers: GetUsersStreamCommand.Response['response']['users'] = []
+        let cursor: string | undefined
+        let hasMore = true
 
-        if (result.status !== 200) {
-            consola.error(`Error API: ${result.status} ${result.data}`)
-            return new Response(JSON.stringify({ error: result.data }), {
-                status: result.status === 404 ? 422 : result.status
+        while (hasMore) {
+            const result = await instance.request<GetUsersStreamCommand.Response>({
+                method: GetUsersStreamCommand.endpointDetails.REQUEST_METHOD,
+                url: GetUsersStreamCommand.url,
+                params: {
+                    telegramId: user.id.toString(),
+                    size: 1000,
+                    ...(cursor ? { cursor } : {})
+                }
             })
+
+            if (result.status !== 200) {
+                consola.error(`Error API: ${result.status} ${result.data}`)
+                return new Response(JSON.stringify({ error: result.data }), {
+                    status: result.status === 404 ? 422 : result.status
+                })
+            }
+
+            panelUsers.push(...result.data.response.users)
+            cursor = result.data.response.nextCursor ?? undefined
+            hasMore = result.data.response.hasMore && Boolean(cursor)
         }
 
-        const matchedUser = result.data.response.users[0]
+        const matchedUser = requestedShortUuid
+            ? panelUsers.find((panelUser) => panelUser.shortUuid === requestedShortUuid)
+            : panelUsers.find((panelUser) => panelUser.status === 'ACTIVE') || panelUsers[0]
 
         if (!matchedUser) {
+            if (requestedShortUuid && panelUsers.length > 0) {
+                return new Response(JSON.stringify({ message: 'Profile not found' }), {
+                    status: 403
+                })
+            }
+
             return new Response(JSON.stringify({ message: 'Users not found' }), {
                 status: 422
             })
@@ -133,7 +154,11 @@ export async function POST(request: Request) {
         return new Response(
             JSON.stringify({
                 ...response,
-                subpageConfigUuid: subpageConfig.data.response.subpageConfigUuid
+                subpageConfigUuid: subpageConfig.data.response.subpageConfigUuid,
+                availableProfiles: panelUsers.map((panelUser) => ({
+                    shortUuid: panelUser.shortUuid,
+                    username: panelUser.username
+                }))
             }),
             { status: 200 }
         )

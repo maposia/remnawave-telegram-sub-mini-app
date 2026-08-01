@@ -1,18 +1,21 @@
 {
-  "main": {
-    "page": {
-      "component": {
-        "buy": "ارتباط با پشتیبانی",
-        "no-sub": "اشتراک شما فعال نیست یا منقضی شده است",
-        "podpiska": "اشتراک",
-        "error-connect": "خطا در اتصال",
-        "error-parse-appconfig": "خطا در پردازش تنظیمات برنامه",
-        "refresh": "به‌روزرسانی",
-        "redirect-message": "پیکربندی تا {seconds} ثانیه دیگر به برنامه شما اضافه خواهد شد",
-        "redirect-link-missing": "لینک افزودن پیکربندی پیدا نشد",
-        "redirect-add-now": "همین حالا اضافه کن",
-        "redirect-check-link": "پارامترهای لینک را بررسی کنید و دوباره تلاش کنید."
-      }
+    "main": {
+        "page": {
+            "component": {
+                "buy": "ارتباط با پشتیبانی",
+                "no-sub": "اشتراک شما فعال نیست یا منقضی شده است",
+                "podpiska": "اشتراک",
+                "error-connect": "خطا در اتصال",
+                "error-parse-appconfig": "خطا در پردازش تنظیمات برنامه",
+                "refresh": "به‌روزرسانی",
+                "redirect-message": "پیکربندی تا {seconds} ثانیه دیگر به برنامه شما اضافه خواهد شد",
+                "redirect-link-missing": "لینک افزودن پیکربندی پیدا نشد",
+                "redirect-add-now": "همین حالا اضافه کن",
+                "redirect-check-link": "پارامترهای لینک را بررسی کنید و دوباره تلاش کنید.",
+                "switch-profile": "تغییر پروفایل",
+                "select-profile": "انتخاب پروفایل",
+                "profile-switch-error": "تغییر پروفایل انجام نشد. دوباره تلاش کنید."
+            }
+        }
     }
-  }
 }

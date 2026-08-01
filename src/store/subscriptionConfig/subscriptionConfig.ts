@@ -48,6 +48,10 @@ export const useSubscriptionConfigStore = create<IActions & IState>()((set) => (
             })
         },
 
+        setConfigLoading: () => {
+            set({ isConfigLoaded: false })
+        },
+
         setLanguage: (lang: TSubscriptionPageLanguageCode) => {
             detector.cacheUserLanguage(lang)
             set({ currentLang: lang })

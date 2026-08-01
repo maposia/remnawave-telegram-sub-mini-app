@@ -1,7 +1,13 @@
 import { GetSubscriptionInfoByShortUuidCommand } from '@remnawave/backend-contract'
 
-type ExtendedSubscription = GetSubscriptionInfoByShortUuidCommand.Response['response'] & {
+export interface SubscriptionProfile {
+    shortUuid: string
+    username: string
+}
+
+export type ExtendedSubscription = GetSubscriptionInfoByShortUuidCommand.Response['response'] & {
     subpageConfigUuid?: string | null
+    availableProfiles: SubscriptionProfile[]
 }
 
 export interface IState {

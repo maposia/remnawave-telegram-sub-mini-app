@@ -6,13 +6,14 @@ import {
     IconUserScan,
     IconX
 } from '@tabler/icons-react'
-import { Card, Group, SimpleGrid, Stack, Text, ThemeIcon, Title } from '@mantine/core'
+import { Card, Group, SimpleGrid, Stack, Text, ThemeIcon } from '@mantine/core'
 import { useTranslation } from '@/hooks/useTranslations'
 import { useSubscription } from '@/store/subscriptionInfo'
 import { getColorGradientSolid } from '@/utils/colorParser'
 import { getExpirationTextUtil } from '@/utils/configParser'
 import { InfoBlock } from '@/components/InfoBlock/InfoBlock'
 import { formatDate } from '@/utils/configParser'
+import { ProfileSwitcher } from '@/components/ProfileSwitcher'
 
 export const SubscriptionInfoExpanded = () => {
     const { t, currentLang, baseTranslations } = useTranslation()
@@ -78,18 +79,7 @@ export const SubscriptionInfoExpanded = () => {
                         </ThemeIcon>
 
                         <Stack gap={2} style={{ minWidth: 0, flex: 1 }}>
-                            <Title
-                                c="white"
-                                fw={600}
-                                order={5}
-                                style={{
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap'
-                                }}
-                            >
-                                {user.username}
-                            </Title>
+                            <ProfileSwitcher size="md" />
                             <Text c={user.daysLeft === 0 ? 'red' : 'dimmed'} fw={600} size="xs">
                                 {getExpirationTextUtil(
                                     user.expiresAt,

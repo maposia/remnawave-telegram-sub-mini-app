@@ -10,7 +10,10 @@
                 "redirect-message": "配置将在 {seconds} 秒后添加到你的应用中",
                 "redirect-link-missing": "未找到配置添加链接",
                 "redirect-add-now": "立即添加",
-                "redirect-check-link": "请检查链接参数后重试。"
+                "redirect-check-link": "请检查链接参数后重试。",
+                "switch-profile": "切换配置文件",
+                "select-profile": "选择配置文件",
+                "profile-switch-error": "无法切换配置文件，请重试。"
             }
         }
     }
