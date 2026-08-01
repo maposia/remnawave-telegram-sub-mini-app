@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/maposia/remnawave-telegram-sub-mini-app/compare/v3.3.0...v4.0.0) (2026-08-01)
+
+
+### Features
+
+* add config loading state with cancellation and improved retry mechanism ([35b3418](https://github.com/maposia/remnawave-telegram-sub-mini-app/commit/35b341849bf3d5a1d0af4c1503fbb554c530200a))
+* add profile switcher component with support for multiple profiles and user selection ([2a35641](https://github.com/maposia/remnawave-telegram-sub-mini-app/commit/2a3564109e654ffa78d83b7b12e699233aee8e65))
+* show limited subscriptions with usage details ([adffe45](https://github.com/maposia/remnawave-telegram-sub-mini-app/commit/adffe4592ec03d5e8d29b3ecf5ef48b4dd96fcdd))
+
 ## [3.3.0](https://github.com/maposia/remnawave-telegram-sub-mini-app/compare/v3.2.7...v3.3.0) (2026-03-30)
 
 
