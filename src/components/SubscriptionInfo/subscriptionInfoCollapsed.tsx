@@ -34,12 +34,14 @@ export const SubscriptionInfoCollapsed = () => {
     const [isExpanded, setIsExpanded] = useState(false)
 
     const { user } = subscription
+    const isActive = user.isActive
+    const isLimited = user.userStatus === 'LIMITED'
 
     const getStatusConfig = () => {
-        if (user.userStatus === 'ACTIVE' && user.daysLeft > 3) {
+        if (isActive && user.daysLeft > 3) {
             return { color: 'teal', icon: <IconCheck size={14} /> }
         }
-        if (user.userStatus === 'ACTIVE' && user.daysLeft > 0) {
+        if (isActive && user.daysLeft >= 0) {
             return { color: 'orange', icon: <IconAlertCircle size={14} /> }
         }
         return { color: 'red', icon: <IconX size={14} /> }
@@ -127,19 +129,11 @@ export const SubscriptionInfoCollapsed = () => {
                         />
 
                         <InfoBlock
-                            color={user.userStatus === 'ACTIVE' ? 'green' : 'red'}
-                            icon={
-                                user.userStatus === 'ACTIVE' ? (
-                                    <IconCheck size={16} />
-                                ) : (
-                                    <IconX size={16} />
-                                )
-                            }
+                            color={isActive ? 'green' : 'red'}
+                            icon={isActive ? <IconCheck size={16} /> : <IconX size={16} />}
                             title={t(baseTranslations.status)}
                             value={
-                                user.userStatus === 'ACTIVE'
-                                    ? t(baseTranslations.active)
-                                    : t(baseTranslations.inactive)
+                                isActive ? t(baseTranslations.active) : t(baseTranslations.inactive)
                             }
                         />
 
@@ -151,7 +145,7 @@ export const SubscriptionInfoCollapsed = () => {
                         />
 
                         <InfoBlock
-                            color="yellow"
+                            color={isLimited ? 'red' : 'yellow'}
                             icon={<IconArrowsUpDown size={16} />}
                             title={t(baseTranslations.bandwidth)}
                             value={`${user.trafficUsed} / ${user.trafficLimit === '0' ? '∞' : user.trafficLimit}`}

@@ -67,7 +67,8 @@ export const SubscriptionInfoCards = () => {
 
     const { user } = subscription
 
-    const isActive = user.userStatus === 'ACTIVE'
+    const isActive = user.isActive
+    const isLimited = user.userStatus === 'LIMITED'
     const statusText = isActive ? t(baseTranslations.active) : t(baseTranslations.inactive)
 
     const bandwidthValue =
@@ -104,7 +105,7 @@ export const SubscriptionInfoCards = () => {
             />
 
             <CardItem
-                color="cyan"
+                color={isLimited ? 'red' : 'cyan'}
                 icon={<IconArrowsUpDown size={18} />}
                 label={t(baseTranslations.bandwidth)}
                 value={bandwidthValue}

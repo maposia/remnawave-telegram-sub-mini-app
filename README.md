@@ -36,6 +36,7 @@ The application requires the following environment variables to be set:
 |-------------|---------|
 | 1.6 - 2.3.9 | 2.3.4   |
 | 2.4.x       | 3.x.x   |
+| 3.0.0 and newer | 4.0.0 and newer |
 ## Plugins and Dependencies
 
 ### Remnawave

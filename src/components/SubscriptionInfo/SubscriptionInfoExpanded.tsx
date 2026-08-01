@@ -20,23 +20,22 @@ export const SubscriptionInfoExpanded = () => {
     const subscription = useSubscription()
 
     const { user } = subscription
+    const isActive = user.isActive
+    const isLimited = user.userStatus === 'LIMITED'
 
     const getStatusAndIcon = (): {
         color: string
         icon: React.ReactNode
         status: string
     } => {
-        if (user.userStatus === 'ACTIVE' && user.daysLeft > 0) {
+        if (isActive && user.daysLeft > 3) {
             return {
                 color: 'teal',
                 icon: <IconCheck size={18} />,
                 status: t(baseTranslations.active)
             }
         }
-        if (
-            (user.userStatus === 'ACTIVE' && user.daysLeft === 0) ||
-            (user.daysLeft >= 0 && user.daysLeft <= 3)
-        ) {
+        if (isActive && user.daysLeft >= 0) {
             return {
                 color: 'orange',
                 icon: <IconAlertCircle size={18} />,
@@ -100,20 +99,10 @@ export const SubscriptionInfoExpanded = () => {
                     />
 
                     <InfoBlock
-                        color={user.userStatus === 'ACTIVE' ? 'green' : 'red'}
-                        icon={
-                            user.userStatus === 'ACTIVE' ? (
-                                <IconCheck size={16} />
-                            ) : (
-                                <IconX size={16} />
-                            )
-                        }
+                        color={isActive ? 'green' : 'red'}
+                        icon={isActive ? <IconCheck size={16} /> : <IconX size={16} />}
                         title={t(baseTranslations.status)}
-                        value={
-                            user.userStatus === 'ACTIVE'
-                                ? t(baseTranslations.active)
-                                : t(baseTranslations.inactive)
-                        }
+                        value={isActive ? t(baseTranslations.active) : t(baseTranslations.inactive)}
                     />
 
                     <InfoBlock
@@ -124,7 +113,7 @@ export const SubscriptionInfoExpanded = () => {
                     />
 
                     <InfoBlock
-                        color="yellow"
+                        color={isLimited ? 'red' : 'yellow'}
                         icon={<IconArrowsUpDown size={16} />}
                         title={t(baseTranslations.bandwidth)}
                         value={`${user.trafficUsed} / ${user.trafficLimit === '0' ? '∞' : user.trafficLimit}`}

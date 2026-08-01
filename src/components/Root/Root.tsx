@@ -105,8 +105,9 @@ function RootInner({ children }: PropsWithChildren) {
         }
     }, [initDataUser])
 
-    const activeSubscription =
-        subscription?.user?.userStatus && subscription?.user?.userStatus === 'ACTIVE'
+    const subscriptionStatus = subscription?.user?.userStatus
+    const shouldShowSubscription =
+        subscriptionStatus === 'ACTIVE' || subscriptionStatus === 'LIMITED'
 
     useEffect(() => {
         setIsLoading(true)
@@ -244,7 +245,7 @@ function RootInner({ children }: PropsWithChildren) {
 
     if (isLoading || isConfigLoading || !isConfigLoaded) return <Loading />
 
-    if (!activeSubscription) {
+    if (!shouldShowSubscription) {
         // @ts-ignore
         return (
             <Box
