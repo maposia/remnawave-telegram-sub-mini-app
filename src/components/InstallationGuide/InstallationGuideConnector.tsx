@@ -173,6 +173,7 @@ export const InstallationGuideConnector = (props: IProps) => {
                         <Button
                             key={index}
                             onClick={() => {
+                                console.log(getRedirectUrl(formattedUrl))
                                 const targetUrl = isTDesktop
                                     ? getRedirectUrl(formattedUrl)
                                     : formattedUrl

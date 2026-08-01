@@ -1,11 +1,8 @@
 import {
-    EncryptHappCryptoLinkCommand,
     GetExternalSquadByUuidCommand,
-    GetExternalSquadsCommand,
-    GetInternalSquadByUuidCommand,
     GetSubpageConfigByShortUuidCommand,
     GetSubscriptionInfoByShortUuidCommand,
-    GetUserByTelegramIdCommand
+    GetUsersStreamCommand
 } from '@remnawave/backend-contract'
 import { createHappCryptoLink } from '@kastov/cryptohapp'
 import { AxiosError } from 'axios'
@@ -40,9 +37,13 @@ export async function POST(request: Request) {
         if (!user || !user.id)
             return new Response(JSON.stringify({ error: 'Invalid user data' }), { status: 400 })
 
-        const result = await instance.request<GetUserByTelegramIdCommand.Response>({
-            method: GetUserByTelegramIdCommand.endpointDetails.REQUEST_METHOD,
-            url: GetUserByTelegramIdCommand.url(user.id.toString())
+        const result = await instance.request<GetUsersStreamCommand.Response>({
+            method: GetUsersStreamCommand.endpointDetails.REQUEST_METHOD,
+            url: GetUsersStreamCommand.url,
+            params: {
+                telegramId: user.id.toString(),
+                size: 1
+            }
         })
 
         if (result.status !== 200) {
@@ -52,13 +53,15 @@ export async function POST(request: Request) {
             })
         }
 
-        if (result.data.response.length === 0) {
+        const matchedUser = result.data.response.users[0]
+
+        if (!matchedUser) {
             return new Response(JSON.stringify({ message: 'Users not found' }), {
                 status: 422
             })
         }
 
-        const shortUuid = result.data.response[0].shortUuid
+        const shortUuid = matchedUser.shortUuid
 
         const subpageConfig = await instance.request<GetSubpageConfigByShortUuidCommand.Response>({
             method: GetSubpageConfigByShortUuidCommand.endpointDetails.REQUEST_METHOD,
@@ -93,7 +96,7 @@ export async function POST(request: Request) {
         const response = subscriptionInfo.data.response
 
         if (isCustomSubdomain) {
-            const externalSquadId = result.data.response[0].externalSquadUuid
+            const externalSquadId = matchedUser.externalSquadUuid
             if (externalSquadId) {
                 const externalSquad =
                     await instance.request<GetExternalSquadByUuidCommand.Response>({
@@ -101,7 +104,7 @@ export async function POST(request: Request) {
                         url: GetExternalSquadByUuidCommand.url(externalSquadId)
                     })
                 const customSubscriptionDomain =
-                    externalSquad.data.response.responseHeaders?.['X-Subscription-Domain']
+                    externalSquad.data.response.responseHeadersAdd?.['X-Subscription-Domain']
 
                 if (customSubscriptionDomain) {
                     const url = new URL(response.subscriptionUrl)

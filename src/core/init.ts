@@ -80,7 +80,13 @@ export async function init(options: {
 
     if (mountViewport.isAvailable()) {
         mountViewport().then(() => {
-            viewport.expand()
+            const { tgWebAppPlatform: platform } = retrieveLaunchParams()
+            const isDesktopTelegram = platform === 'tdesktop' || platform === 'macos'
+
+            if (!isDesktopTelegram) {
+                viewport.expand()
+            }
+
             bindViewportCssVars()
         })
     }

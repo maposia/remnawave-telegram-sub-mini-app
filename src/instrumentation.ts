@@ -1,7 +1,4 @@
-import {
-    GetSubscriptionPageConfigCommand,
-    GetSubscriptionPageConfigsCommand
-} from '@remnawave/backend-contract'
+import { GetSubpageConfigCommand, GetSubpageConfigsCommand } from '@remnawave/backend-contract'
 import { consola } from 'consola/browser'
 import {
     SubscriptionPageRawConfigSchema,
@@ -24,8 +21,8 @@ export async function register() {
             try {
                 consola.info('🔄 Trying to fetch subscription configs...')
                 response = await instance.request({
-                    method: GetSubscriptionPageConfigsCommand.endpointDetails.REQUEST_METHOD,
-                    url: GetSubscriptionPageConfigsCommand.url
+                    method: GetSubpageConfigsCommand.endpointDetails.REQUEST_METHOD,
+                    url: GetSubpageConfigsCommand.url
                 })
 
                 isConnected = true
@@ -37,12 +34,9 @@ export async function register() {
         }
 
         try {
-            // const response = await instance.request<GetSubscriptionPageConfigsCommand.Response>({
-            //     method: GetSubscriptionPageConfigsCommand.endpointDetails.REQUEST_METHOD,
-            //     url: GetSubscriptionPageConfigsCommand.url
-            // })
-            const validationResult =
-                await GetSubscriptionPageConfigsCommand.ResponseSchema.parseAsync(response?.data)
+            const validationResult = await GetSubpageConfigsCommand.ResponseSchema.parseAsync(
+                response?.data
+            )
 
             if (!validationResult) {
                 consola.error('Subscription page config list cannot be fetched')
@@ -54,9 +48,9 @@ export async function register() {
 
             for (const configUuid of subscriptionPageConfigList) {
                 const subscriptionPageConfig =
-                    await instance.request<GetSubscriptionPageConfigCommand.Response>({
-                        method: GetSubscriptionPageConfigCommand.endpointDetails.REQUEST_METHOD,
-                        url: GetSubscriptionPageConfigCommand.url(configUuid)
+                    await instance.request<GetSubpageConfigCommand.Response>({
+                        method: GetSubpageConfigCommand.endpointDetails.REQUEST_METHOD,
+                        url: GetSubpageConfigCommand.url(configUuid)
                     })
 
                 if (!subscriptionPageConfig.data.response.config) {
