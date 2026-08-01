@@ -12,7 +12,9 @@ import {
     type ThemeParams,
     themeParamsState,
     retrieveLaunchParams,
-    emitEvent
+    emitEvent,
+    closingBehavior,
+    swipeBehavior
 } from '@telegram-apps/sdk-react'
 
 /**
@@ -68,6 +70,14 @@ export async function init(options: {
 
     mountBackButton.ifAvailable()
     restoreInitData()
+
+    swipeBehavior.mount()
+    closingBehavior.mount()
+    closingBehavior.enableConfirmation()
+
+    if (swipeBehavior.isMounted()) {
+        swipeBehavior.disableVertical()
+    }
 
     if (mountMiniAppSync.isAvailable()) {
         mountMiniAppSync()
