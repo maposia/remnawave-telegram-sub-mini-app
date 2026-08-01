@@ -2,6 +2,7 @@
     "name": "remnawave-telegram-sub-mini-app",
     "version": "4.0.0",
     "private": true,
+    "packageManager": "pnpm@10.11.0",
     "scripts": {
         "dev": "next dev",
         "dev:https": "next dev --experimental-https",
