@@ -81,6 +81,7 @@ function RootInner({ children }: PropsWithChildren) {
 
     const [errorConnect, setErrorConnect] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [isConfigLoading, setIsConfigLoading] = useState(true)
 
     if (miniApp.mount.isAvailable()) {
         miniApp.mount()
@@ -141,14 +142,21 @@ function RootInner({ children }: PropsWithChildren) {
     }, [initDataRaw])
 
     useEffect(() => {
+        if (isLoading) return
+
         const targetUuid = '00000000-0000-0000-0000-000000000000'
+        const abortController = new AbortController()
         let retryCount = 0
+        let retryTimeout: ReturnType<typeof setTimeout> | undefined
         const maxRetries = 3
+
+        setIsConfigLoading(true)
 
         const fetchConfig = async () => {
             try {
                 const configs = await ofetch<TConfigsMap>(`/api/app-config`, {
-                    query: { v: Date.now() }
+                    query: { v: Date.now() },
+                    signal: abortController.signal
                 })
 
                 const configId = subscription?.subpageConfigUuid || targetUuid
@@ -158,7 +166,7 @@ function RootInner({ children }: PropsWithChildren) {
                     if (retryCount < maxRetries) {
                         retryCount++
                         consola.warn(`Config ${configId} not found, retrying... (${retryCount})`)
-                        setTimeout(fetchConfig, 2000)
+                        retryTimeout = setTimeout(fetchConfig, 2000)
                         return
                     }
                     throw new Error(`Config with UUID ${configId} not found in app-data`)
@@ -174,10 +182,13 @@ function RootInner({ children }: PropsWithChildren) {
                 }
 
                 configActions.setConfig(parsedConfig.data)
+                setIsConfigLoading(false)
             } catch (error: any) {
+                if (abortController.signal.aborted) return
+
                 if (error.response?.status === 404 && retryCount < maxRetries) {
                     retryCount++
-                    setTimeout(fetchConfig, 2000)
+                    retryTimeout = setTimeout(fetchConfig, 2000)
                     return
                 }
 
@@ -187,7 +198,12 @@ function RootInner({ children }: PropsWithChildren) {
         }
 
         fetchConfig()
-    }, [subscription])
+
+        return () => {
+            abortController.abort()
+            if (retryTimeout) clearTimeout(retryTimeout)
+        }
+    }, [configActions, isLoading, subscription?.subpageConfigUuid])
 
     useEffect(() => {
         const fetchAppConfig = async () => {
@@ -225,7 +241,7 @@ function RootInner({ children }: PropsWithChildren) {
             </Container>
         )
 
-    if (isLoading || !isConfigLoaded) return <Loading />
+    if (isLoading || isConfigLoading || !isConfigLoaded) return <Loading />
 
     if (!activeSubscription) {
         // @ts-ignore
