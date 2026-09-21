@@ -73,7 +73,7 @@ export async function init(options: {
 
     swipeBehavior.mount()
     closingBehavior.mount()
-    closingBehavior.enableConfirmation()
+    closingBehavior.disableConfirmation()
 
     if (swipeBehavior.isMounted()) {
         swipeBehavior.disableVertical()
